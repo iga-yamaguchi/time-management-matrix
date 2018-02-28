@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack  = require('webpack');
 module.exports = {
     mode: 'development',
@@ -15,9 +16,23 @@ module.exports = {
                             ]
                         }
                     }
+                ],
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.vue$/,
+                use: [
+                    {
+                        loader: "vue-loader",
+                        options: {
+                            loaders: {
+                                js: 'babel-loader',
+                            }
+                        }
+                    }
                 ]
-            }
+            },
         ]
-    }
+    },
 
 };

@@ -1,9 +1,6 @@
-class Test {
-    echo() {
-        alert('test class');
-    }
-}
+import Vue from 'vue';
+import App from './components/app.vue';
 
-alert('test');
-const test = new Test();
-test.echo();
+new Vue({
+    render: h => h(App),
+}).$mount('#app');
