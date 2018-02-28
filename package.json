@@ -1,0 +1,19 @@
+{
+  "name": "time-management-matrix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iga-yamaguchi/time-management-matrix.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iga-yamaguchi/time-management-matrix/issues"
+  },
+  "homepage": "https://github.com/iga-yamaguchi/time-management-matrix#readme"
+}
