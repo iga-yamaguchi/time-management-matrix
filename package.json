@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/iga-yamaguchi/time-management-matrix/issues"
   },
-  "homepage": "https://github.com/iga-yamaguchi/time-management-matrix#readme"
+  "homepage": "https://github.com/iga-yamaguchi/time-management-matrix#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.3",
+    "babel-preset-env": "^1.6.1",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9"
+  }
 }
