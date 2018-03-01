@@ -29,7 +29,6 @@
     "webpack-cli": "^2.0.9"
   },
   "dependencies": {
-    "chart.js": "^2.7.1",
     "vue": "^2.5.13"
   }
 }
