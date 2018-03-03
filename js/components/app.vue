@@ -49,17 +49,19 @@
                         },
                     },
                 ],
+                frames: [
+                    {x: 0, y: 0, width: 0, height: 0}
+                ],
                 framePadding: {
                     width: 10,
                     height: 10,
                 },
             };
         },
-        computed: {
-            frames: {
-                cache: false,
-                get() {
-                    return this.items.map((item, index) => {
+        watch: {
+            items: {
+                handler() {
+                    this.frames = this.items.map((item, index) => {
                         console.log('frame map');
                         if (!this.isMounted
                             || !this.$refs.text
@@ -73,7 +75,10 @@
                             height: textSVGRect.height + this.framePadding.height,
                         };
                     });
-                }
+
+                },
+                deep: true,
+                immediate: true,
             },
         },
         created() {
