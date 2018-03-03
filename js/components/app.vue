@@ -22,10 +22,9 @@
         </svg>
         <div class="task-inputs">
             <label v-for="(item, index) in items">
-                input
-                <input v-model="item.text.value">
-                <input v-model="item.text.x">
-                <input v-model="item.text.y">
+                <input type="text" v-model="item.text.value">
+                <input type="number" v-model="item.text.x">
+                <input type="number" v-model="item.text.y">
                 <button @click="add">+</button>
             </label>
         </div>
@@ -43,18 +42,11 @@
                 },
                 items: [
                     {
-                        index: 0,
                         text: {
                             x: 0,
                             y: 0,
                             value: '',
                         },
-                        frame: {
-                            x: 0,
-                            y: 0,
-                            width: 0,
-                            height: 0
-                        }
                     },
                 ],
                 framePadding: {
@@ -64,28 +56,29 @@
             };
         },
         computed: {
-            frames() {
-                console.log(this.$refs);
-                return this.items.map(item => {
-                    console.log(item.index);
-                    if (!this.isMounted
-                        || !this.$refs.text
-                        || !this.$refs.text[item.index]) return {x: 0, y: 0, width: 0, height: 0};
+            frames: {
+                cache: false,
+                get() {
+                    return this.items.map((item, index) => {
+                        console.log('frame map');
+                        if (!this.isMounted
+                            || !this.$refs.text
+                            || !this.$refs.text[index]) return {x: 0, y: 0, width: 0, height: 0};
 
-                    const textSVGRect = this.getBBoxInText(item.index);
-                    return {
-                        x: textSVGRect.x - this.framePadding.width / 2,
-                        y: textSVGRect.y - this.framePadding.height / 2,
-                        width: textSVGRect.width + this.framePadding.width,
-                        height: textSVGRect.height + this.framePadding.height,
-                    };
-                });
+                        const textSVGRect = this.getBBoxInText(index);
+                        return {
+                            x: textSVGRect.x - this.framePadding.width / 2,
+                            y: textSVGRect.y - this.framePadding.height / 2,
+                            width: textSVGRect.width + this.framePadding.width,
+                            height: textSVGRect.height + this.framePadding.height,
+                        };
+                    });
+                }
             },
         },
         created() {
             this.items = [
                 {
-                    index: 0,
                     text: {
                         x: 15,
                         y: 15,
@@ -104,10 +97,8 @@
                 return this.$refs.text[index].getBBox();
             },
             add() {
-                console.log(this.items.length);
                 this.items.push(
                     {
-                        index: this.items.length,
                         text: {
                             x: 0,
                             y: 0,
