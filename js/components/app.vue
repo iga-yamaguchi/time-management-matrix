@@ -4,7 +4,7 @@
              baseProfile="full"
              xmlns="http://www.w3.org/2000/svg">
 
-            <rect :x="vw(baseFrame.x)" :y="vh(baseFrame.y)" width="80vw" height="80vh" ref="rect"></rect>
+            <rect :x="baseFrame.x | vw" :y="baseFrame.y | vh" width="80vw" height="80vh" ref="rect"></rect>
             <line x1="0" x2="100vw" y1="50vh" y2="50vh"></line>
             <line x1="50vw" x2="50vw" y1="0" y2="100vh"></line>
 
@@ -14,17 +14,16 @@
             <text x="60vw" y="5vh">Not Urgent</text>
 
             <template v-for="(item, index) in items">
-                <rect :x="frames[index].x" :y="frames[index].y" :width="frames[index].width"
-                      :height="frames[index].height"
-                      class="item-frame"></rect>
-                <text :x="vw(item.text.x)" :y="vh(item.text.y)" class="item-text" ref="text">{{ item.text.value}}</text>
+                <text :x="urgentPosition(item.urgent) | vw" :y="importantPosition(item.important) | vh"
+                      class="item-text" ref="text">{{ item.value}}
+                </text>
             </template>
         </svg>
         <div class="task-inputs">
             <label v-for="(item, index) in items">
-                <input type="text" v-model="item.text.value">
-                <input type="number" v-model="item.text.x">
-                <input type="number" v-model="item.text.y">
+                <input type="text" v-model="item.value">
+                <input type="number" v-model="item.urgent">
+                <input type="number" v-model="item.important">
                 <button @click="add">+</button>
             </label>
         </div>
@@ -42,82 +41,48 @@
                 },
                 items: [
                     {
-                        text: {
-                            x: 0,
-                            y: 0,
-                            value: '',
-                        },
-                    },
-                ],
-                frames: [
-                    {x: 0, y: 0, width: 0, height: 0}
-                ],
-                framePadding: {
-                    width: 10,
-                    height: 10,
-                },
-            };
-        },
-        watch: {
-            items: {
-                handler() {
-                    this.frames = this.items.map((item, index) => {
-                        console.log('frame map');
-                        if (!this.isMounted
-                            || !this.$refs.text
-                            || !this.$refs.text[index]) return {x: 0, y: 0, width: 0, height: 0};
-
-                        const textSVGRect = this.getBBoxInText(index);
-                        return {
-                            x: textSVGRect.x - this.framePadding.width / 2,
-                            y: textSVGRect.y - this.framePadding.height / 2,
-                            width: textSVGRect.width + this.framePadding.width,
-                            height: textSVGRect.height + this.framePadding.height,
-                        };
-                    });
-
-                },
-                deep: true,
-                immediate: true,
-            },
-        },
-        created() {
-            this.items = [
-                {
-                    text: {
-                        x: 15,
-                        y: 15,
+                        urgent: 100,
+                        important: 100,
                         value: 'test',
                     },
-                }
-            ];
+                ],
+                max: 100,
+                min: 0,
+            };
+        },
+        created() {
         },
         mounted() {
             this.isMounted = true;
         },
+        filters: {
+            vw(width) {
+                return width ? width + 'vw' : 0;
+            },
+            vh(height) {
+                return height ? height + 'vh' : 0;
+            },
+        },
         methods: {
-            vw: (width) => width + 'vw',
-            vh: (height) => height + 'vh',
+            urgentPosition(urgent) {
+                return this.max - urgent + this.baseFrame.x;
+            },
+            importantPosition(important) {
+                return this.max - important + this.baseFrame.y;
+            },
             getBBoxInText(index) {
                 return this.$refs.text[index].getBBox();
             },
             add() {
                 this.items.push(
                     {
-                        text: {
-                            x: 0,
-                            y: 0,
-                            value: '',
-                        },
-                        frame: {
-                            x: 0,
-                            y: 0,
-                            width: 0,
-                            height: 0
-                        }
+                        urgent: 0,
+                        important: 0,
+                        value: '',
                     }
                 );
-            }
+            },
+
         }
     }
 </script>
