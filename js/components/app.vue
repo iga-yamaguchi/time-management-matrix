@@ -4,7 +4,8 @@
              baseProfile="full"
              xmlns="http://www.w3.org/2000/svg">
 
-            <rect :x="baseFrame.x | vw" :y="baseFrame.y | vh" width="80vw" height="80vh" ref="rect"></rect>
+            <rect :x="baseFrame.x | vw" :y="baseFrame.y | vh" :width="baseFrame.width | vw"
+                  :height="baseFrame.height | vh" ref="rect"></rect>
             <line x1="0" x2="100vw" y1="50vh" y2="50vh"></line>
             <line x1="50vw" x2="50vw" y1="0" y2="100vh"></line>
 
@@ -14,15 +15,15 @@
             <text x="60vw" y="5vh">Not Urgent</text>
 
             <template v-for="(item, index) in items">
-                <text :x="urgentPosition(item.urgent) | vw" :y="importantPosition(item.important) | vh"
-                      class="item-text" ref="text">{{ item.value}}
-                </text>
+                <text :x="urgentPosition(item.urgent) | vw" :y="importantPosition(item.important, index) | vh" class="item-text" ref="text">{{ item.value}}</text>
             </template>
         </svg>
         <div class="task-inputs">
             <label v-for="(item, index) in items">
                 <input type="text" v-model="item.value">
+                <input type="range" v-model="item.urgent">
                 <input type="number" v-model="item.urgent">
+                <input type="range" v-model="item.important">
                 <input type="number" v-model="item.important">
                 <button @click="add">+</button>
             </label>
@@ -38,6 +39,8 @@
                 baseFrame: {
                     x: 10,
                     y: 10,
+                    width: 80,
+                    height: 80,
                 },
                 items: [
                     {
@@ -65,13 +68,14 @@
         },
         methods: {
             urgentPosition(urgent) {
-                return this.max - urgent + this.baseFrame.x;
+                return (this.max - urgent) * (this.baseFrame.width / this.max) + this.baseFrame.x;
             },
-            importantPosition(important) {
-                return this.max - important + this.baseFrame.y;
+            importantPosition(important, index) {
+                return (this.max - important) * (this.baseFrame.height / this.max) + this.baseFrame.y;
             },
             getBBoxInText(index) {
-                return this.$refs.text[index].getBBox();
+                if (this.isMounted) return this.$refs.text[index].getBBox();
+                return 0;
             },
             add() {
                 this.items.push(
