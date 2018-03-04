@@ -40,20 +40,18 @@
             return {
                 isMounted: false,
                 baseFrame: this.$store.state.baseFrame,
-                // items: [
-                //     {
-                //         urgent: 100,
-                //         important: 100,
-                //         value: '',
-                //     },
-                // ],
                 max: this.$store.state.max,
                 min: this.$store.state.min,
             };
         },
-        computed: mapState([
-            'items'
-        ]),
+        computed: Object.assign(mapState([
+            'items',
+        ]), {
+            ...mapGetters([
+                'urgentPosition',
+                'importantPosition',
+            ]),
+        }),
         created() {
         },
         mounted() {
@@ -68,28 +66,15 @@
             },
         },
         methods: {
-            ...mapGetters([
-                'urgentPosition',
-                'importantPosition',
-            ]),
             getBBoxInText(index) {
                 if (this.isMounted) return this.$refs.text[index].getBBox();
                 return 0;
             },
             add() {
-                this.items.push(
-                    {
-                        urgent: 100,
-                        important: 100,
-                        value: '',
-                    }
-                );
-
                 this.$store.commit('add');
             },
             remove(index) {
-                this.items.splice(index, 1);
-                this.$store.commit('remove');
+                this.$store.commit('remove', index);
             },
         }
     }
