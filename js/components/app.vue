@@ -33,27 +33,27 @@
 </template>
 
 <script>
+    import {mapState, mapGetters} from 'vuex';
+
     export default {
         data() {
             return {
                 isMounted: false,
-                baseFrame: {
-                    x: 10,
-                    y: 10,
-                    width: 80,
-                    height: 80,
-                },
-                items: [
-                    {
-                        urgent: 100,
-                        important: 100,
-                        value: '',
-                    },
-                ],
-                max: 100,
-                min: 0,
+                baseFrame: this.$store.state.baseFrame,
+                // items: [
+                //     {
+                //         urgent: 100,
+                //         important: 100,
+                //         value: '',
+                //     },
+                // ],
+                max: this.$store.state.max,
+                min: this.$store.state.min,
             };
         },
+        computed: mapState([
+            'items'
+        ]),
         created() {
         },
         mounted() {
@@ -68,12 +68,10 @@
             },
         },
         methods: {
-            urgentPosition(urgent) {
-                return (this.max - urgent) * (this.baseFrame.width / this.max) + this.baseFrame.x;
-            },
-            importantPosition(important, index) {
-                return (this.max - important) * (this.baseFrame.height / this.max) + this.baseFrame.y;
-            },
+            ...mapGetters([
+                'urgentPosition',
+                'importantPosition',
+            ]),
             getBBoxInText(index) {
                 if (this.isMounted) return this.$refs.text[index].getBBox();
                 return 0;
@@ -86,9 +84,12 @@
                         value: '',
                     }
                 );
+
+                this.$store.commit('add');
             },
             remove(index) {
                 this.items.splice(index, 1);
+                this.$store.commit('remove');
             },
         }
     }
