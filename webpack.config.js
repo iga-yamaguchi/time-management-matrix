@@ -2,7 +2,10 @@ const path = require('path');
 const webpack  = require('webpack');
 module.exports = {
     mode: 'development',
-    entry: './js/app.js',
+    entry: [
+        'babel-polyfill',
+        './js/app.js'
+    ],
     module: {
         rules: [
             {
@@ -10,11 +13,6 @@ module.exports = {
                 use: [
                     {
                         loader: "babel-loader",
-                        options: {
-                            presets: [
-                                ['env', {'modules': false}]
-                            ]
-                        }
                     }
                 ],
                 exclude: /node_modules/,
