@@ -33,7 +33,8 @@
 </template>
 
 <script>
-    import {mapState, mapGetters} from 'vuex';
+    import {mapState, mapGetters, mapMutations} from 'vuex';
+    import * as types from '../store/types';
 
     export default {
         data() {
@@ -48,8 +49,8 @@
             'items',
         ]), {
             ...mapGetters([
-                'urgentPosition',
-                'importantPosition',
+                types.urgentPosition,
+                types.importantPosition,
             ]),
         }),
         created() {
@@ -70,12 +71,10 @@
                 if (this.isMounted) return this.$refs.text[index].getBBox();
                 return 0;
             },
-            add() {
-                this.$store.commit('add');
-            },
-            remove(index) {
-                this.$store.commit('remove', index);
-            },
+            ...mapMutations([
+                types.add,
+                types.remove,
+            ]),
         }
     }
 </script>

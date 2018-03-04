@@ -1,8 +1,10 @@
+import * as types from './types';
+
 export default {
-    urgentPosition: (state) => (urgent) => {
+    [types.urgentPosition]: (state) => (urgent) => {
         return (state.max - urgent) * (state.baseFrame.width / state.max) + state.baseFrame.x;
     },
-    importantPosition: (state) => (important) => {
+    [types.importantPosition]: (state) => (important) => {
         return (state.max - important) * (state.baseFrame.height / state.max) + state.baseFrame.y;
     },
 }
