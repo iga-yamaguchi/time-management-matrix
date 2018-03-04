@@ -25,8 +25,9 @@
                 <input type="number" v-model="item.urgent">
                 <input type="range" v-model="item.important">
                 <input type="number" v-model="item.important">
-                <button @click="add">+</button>
+                <button @click="remove(index)">-</button>
             </label>
+            <button @click="add">+</button>
         </div>
     </div>
 </template>
@@ -46,7 +47,7 @@
                     {
                         urgent: 100,
                         important: 100,
-                        value: 'test',
+                        value: '',
                     },
                 ],
                 max: 100,
@@ -80,13 +81,15 @@
             add() {
                 this.items.push(
                     {
-                        urgent: 0,
-                        important: 0,
+                        urgent: 100,
+                        important: 100,
                         value: '',
                     }
                 );
             },
-
+            remove(index) {
+                this.items.splice(index, 1);
+            },
         }
     }
 </script>
