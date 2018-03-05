@@ -35,6 +35,7 @@
 <script>
     import {mapState, mapGetters, mapMutations} from 'vuex';
     import * as types from '../store/types';
+    import {LocalStorage} from "../util/local-storage";
 
     export default {
         data() {
@@ -54,6 +55,9 @@
             ]),
         }),
         created() {
+            const items = this.$store.getters.initialItems;
+            console.log(items);
+            this.$store.commit(types.set, items);
         },
         mounted() {
             this.isMounted = true;
