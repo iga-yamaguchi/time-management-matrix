@@ -43,6 +43,7 @@
                 baseFrame: this.$store.state.baseFrame,
                 max: this.$store.state.max,
                 min: this.$store.state.min,
+                nowSave: false,
             };
         },
         computed: Object.assign(mapState([
@@ -54,13 +55,19 @@
             ]),
         }),
         created() {
-            const items = this.$store.getters.initialItems;
+            const items = this.$store.getters[types.initialItems];
             this.$store.commit(types.set, items);
         },
         watch: {
             items: {
                 handler() {
-                    localStorage.setItem('items', JSON.stringify(this.$store.state.items));
+                    if (this.nowSave) return;
+
+                    this.nowSave = true;
+                    setTimeout(() => {
+                        this.nowSave = false;
+                        localStorage.setItem('items', JSON.stringify(this.$store.state.items));
+                    }, 1000);
                 },
                 deep: true,
             },
