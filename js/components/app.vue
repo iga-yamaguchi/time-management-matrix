@@ -107,10 +107,7 @@
     }
 
     rect {
-        fill: purple;
-        fill-opacity: 0.5;
-        stroke: blue;
-        stroke-opacity: 0.8;
+        fill: #aefbdd;
     }
 
     rect.item-frame {
@@ -122,7 +119,7 @@
     }
 
     line {
-        stroke: black;
+        stroke: white;
         stroke-width: 1;
     }
 
