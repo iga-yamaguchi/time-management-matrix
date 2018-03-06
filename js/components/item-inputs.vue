@@ -36,7 +36,9 @@
 
 <style scoped>
     .task-inputs {
+        background-color: #00000042;
         position: absolute;
+        padding: 0.5vh 2vw;
     }
 
     .task-inputs label {
