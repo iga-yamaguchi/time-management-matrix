@@ -18,25 +18,18 @@
                 <text :x="urgentPosition(item.urgent) | vw" :y="importantPosition(item.important, index) | vh" class="item-text" ref="text">{{ item.value}}</text>
             </template>
         </svg>
-        <div class="task-inputs">
-            <label v-for="(item, index) in items">
-                <input type="text" v-model="item.value">
-                <input type="range" v-model="item.urgent">
-                <input type="number" v-model="item.urgent">
-                <input type="range" v-model="item.important">
-                <input type="number" v-model="item.important">
-                <button @click="remove(index)">-</button>
-            </label>
-            <button @click="add">+</button>
-        </div>
+        <item-inputs v-if="displayInputs"></item-inputs>
+        <button @click="toggle">{{ inputToggleText }}</button>
     </div>
 </template>
 
 <script>
     import {mapState, mapGetters, mapMutations} from 'vuex';
     import * as types from '../store/types';
+    import ItemInputs from "./item-inputs.vue";
 
     export default {
+        components: {ItemInputs},
         data() {
             return {
                 isMounted: false,
@@ -44,6 +37,8 @@
                 max: this.$store.state.max,
                 min: this.$store.state.min,
                 nowSave: false,
+                inputToggleText: 'display',
+                displayInputs: false,
             };
         },
         computed: Object.assign(mapState([
@@ -88,10 +83,10 @@
                 if (this.isMounted) return this.$refs.text[index].getBBox();
                 return 0;
             },
-            ...mapMutations([
-                types.add,
-                types.remove,
-            ]),
+            toggle() {
+                this.inputToggleText = this.displayInputs ? 'display' : 'hide';
+                this.displayInputs = !this.displayInputs;
+            }
         }
     }
 </script>
@@ -127,11 +122,9 @@
         font-size: 32px;
     }
 
-    .task-inputs {
+    button {
         position: absolute;
-    }
-
-    .task-inputs label {
-        display: block;
+        bottom: 1vh;
+        left: 1vw;
     }
 </style>
